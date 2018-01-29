@@ -55,7 +55,7 @@ definejs('GASessionsWidget', function create (){
                   mode: this.props.mode,
                   isEditing: this.props.mode == 'edit' ? true : false,
                   ready: false,
-									activeAttr: 0,
+                  activeAttr: 0,
                   rows: [
                   	['',0,0,0]
                   ],
@@ -84,7 +84,6 @@ definejs('GASessionsWidget', function create (){
 
                 gapi.analytics.ready(a => {
                   gapi.analytics.auth.on('success', response => {
-                  	console.log(this.authButtonNode)
                     this.authButtonNode.style.display='none';
                     this.setState({
                       ready: true,
@@ -97,7 +96,7 @@ definejs('GASessionsWidget', function create (){
 
               loadAnalytics = (activeAttr) => {
               	const self = this
-								const dates = ['1daysAgo', '7daysAgo', '30daysAgo']
+                const dates = ['1daysAgo', '7daysAgo', '30daysAgo']
                 const sessions = query({
                   'ids': ids,
                   'dimensions': 'ga:date',
@@ -132,12 +131,9 @@ definejs('GASessionsWidget', function create (){
                   var data3 = results[2].rows.map(function(row) { return +row[1]; });
                   var labels = results[0].rows.map(function(row) { return +row[0]; });
 
-                  console.log('res', results, data1, data2, data3, labels)
                   const rows  = labels.map(function (value, index) {
-                    // console.log('item', value, index)
                     return [moment(value, 'YYYYMMDD').format('D MMM'), data1[index], data2[index], data3[index]]
                   })
-                  console.log('rows', rows)
 									self.setState({rows})
                 });
 							}
@@ -147,7 +143,6 @@ definejs('GASessionsWidget', function create (){
               }
 
               render() {
-								console.log('ready', this.state.ready)
                 let widgetStyle = {
                   textAlign: this.props.widgetStyle.textAlign,
                   fontWeight: this.props.widgetStyle.isBold ? 'bold' : 'normal',
