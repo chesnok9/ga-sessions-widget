@@ -23,8 +23,8 @@ import '../../scss/GASessionsWidget/GASessionsWidget.scss';
 })(window, document, "script")
 
 
-const CLIENT_ID = "<client-id>"
-const ids = "ga:<view-id>"
+const CLIENT_ID = "[client-id]"
+const ids = "ga:[view-id]"
 
 const buttons = ['Day', 'Week', 'Month']
 const options = {
