@@ -47,7 +47,7 @@ definejs('GASessionsWidget', function create (){
 
     return {
         createComponent: function (React, Component) {
-          	return class GASessionsWidget extends Component {
+            return class GASessionsWidget extends Component {
 
               constructor (props){
                 super(props);
@@ -57,7 +57,7 @@ definejs('GASessionsWidget', function create (){
                   ready: false,
                   activeAttr: 0,
                   rows: [
-                  	['',0,0,0]
+                    ['',0,0,0]
                   ],
                   columns: [
                     {type: 'string', label: 'Day',},
@@ -95,7 +95,7 @@ definejs('GASessionsWidget', function create (){
               }
 
               loadAnalytics = (activeAttr) => {
-              	const self = this
+                const self = this
                 const dates = ['1daysAgo', '7daysAgo', '30daysAgo']
                 const sessions = query({
                   'ids': ids,
@@ -134,11 +134,11 @@ definejs('GASessionsWidget', function create (){
                   const rows  = labels.map(function (value, index) {
                     return [moment(value, 'YYYYMMDD').format('D MMM'), data1[index], data2[index], data3[index]]
                   })
-									self.setState({rows})
+                  self.setState({rows})
                 });
-							}
+              }
 
-							componentDidMount() {
+              componentDidMount() {
                 this.init()
               }
 
@@ -153,41 +153,40 @@ definejs('GASessionsWidget', function create (){
                 }
 
                 return (
-									<div style={{display: 'block', width: 350, margin: 0}}>
-										<div ref={node => (this.authButtonNode = node)}/>
-										{this.state.ready ?
-											(<div style={{marginTop: 10}}>
-												<div style={{display: 'flex', justifyContent: 'flex-end'}}>
-													<ButtonGroup size="xs" color="secondary">
-														{buttons.map((title, index) =>
-															(<Button
-																key={index}
-																outline
-																onClick={() => this.handleClick(index)}
-																active={index === this.state.activeAttr}
-																style={{height: 24}}>
-																{title}
-															</Button>))
-														}
-													</ButtonGroup>
-												</div>
-												<Chart
-													chartType="LineChart"
-													// rows={this.state.rows}
-													rows={this.state.rows}
-													columns={this.state.columns}
-													options={options}
-													width={'100%'}
-													legend_toggle
-												/>
-											</div>)
-											: null
-										}
-									</div>
+                  <div style={{display: 'block', width: 350, margin: 0}}>
+                    <div ref={node => (this.authButtonNode = node)}/>
+                    {this.state.ready ?
+                      (<div style={{marginTop: 10}}>
+                        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                          <ButtonGroup size="xs" color="secondary">
+                            {buttons.map((title, index) =>
+                              (<Button
+                                key={index}
+                                outline
+                                onClick={() => this.handleClick(index)}
+                                active={index === this.state.activeAttr}
+                                style={{height: 24}}>
+                                {title}
+                              </Button>))
+                            }
+                          </ButtonGroup>
+                        </div>
+                        <Chart
+                          chartType="LineChart"
+                          // rows={this.state.rows}
+                          rows={this.state.rows}
+                          columns={this.state.columns}
+                          options={options}
+                          width={'100%'}
+                          legend_toggle
+                        />
+                      </div>)
+                      : null
+                    }
+                  </div>
                 )
               }
-						}
-
+            }
         }
     }
 })
