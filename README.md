@@ -1,6 +1,6 @@
 # ga-sessions-widget
 
-An upBoard widget to show Google Analytics Active Users report
+An upBoard widget to show Google Analytics Sessions report
 
 ## Installation
 
