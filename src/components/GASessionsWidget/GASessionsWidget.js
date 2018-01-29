@@ -5,6 +5,7 @@ import { Chart } from 'react-google-charts';
 import moment from 'moment'
 import '../../scss/GASessionsWidget/GASessionsWidget.scss';
 
+// google script
 ;(function(w, d, s, g, js, fjs) {
   g = w.gapi || (w.gapi = {})
   g.analytics = {
@@ -22,11 +23,16 @@ import '../../scss/GASessionsWidget/GASessionsWidget.scss';
   }
 })(window, document, "script")
 
-
+// Google ClientID
 const CLIENT_ID = "[client-id]"
+
+// Google View ID
 const ids = "ga:[view-id]"
 
+// Buttons to change period titles
 const buttons = ['Day', 'Week', 'Month']
+
+// Options for a GoogleCharts
 const options = {
   title: 'Sessions',
     titlePosition: 'out',
@@ -42,6 +48,14 @@ const options = {
   lineWidth: 2,
     colors: ['#1976D2', '#F57C00', '#388E3C'],
 }
+
+// Legend names and data types for chart
+const columns = [
+  {type: 'string', label: 'Day',},
+  {type: 'number', label: 'Total Users',},
+  {type: 'number', label: 'Returned Users',},
+  {type: 'number', label: 'New Users',},
+]
 
 definejs('GASessionsWidget', function create (){
 
@@ -59,20 +73,16 @@ definejs('GASessionsWidget', function create (){
                   rows: [
                     ['',0,0,0]
                   ],
-                  columns: [
-                    {type: 'string', label: 'Day',},
-                    {type: 'number', label: 'Total Users',},
-                    {type: 'number', label: 'Returned Users',},
-                    {type: 'number', label: 'New Users',},
-                  ],
                 }
               }
 
+              // Handle change period click
               handleClick = (activeAttr) => {
                 this.setState({activeAttr})
                 this.loadAnalytics(activeAttr)
               }
 
+              // Google account authorization
               init = () => {
                 const doAuth = () => {
                   gapi.analytics.auth &&
@@ -94,6 +104,7 @@ definejs('GASessionsWidget', function create (){
                 })
               }
 
+              // Load data from Google Analytics for current active settings
               loadAnalytics = (activeAttr) => {
                 const self = this
                 const dates = ['1daysAgo', '7daysAgo', '30daysAgo']
@@ -175,7 +186,7 @@ definejs('GASessionsWidget', function create (){
                           chartType="LineChart"
                           // rows={this.state.rows}
                           rows={this.state.rows}
-                          columns={this.state.columns}
+                          columns={columns}
                           options={options}
                           width={'100%'}
                           legend_toggle
@@ -191,6 +202,7 @@ definejs('GASessionsWidget', function create (){
     }
 })
 
+// Request for Google Analytics report
 function query(params) {
   return new Promise(function(resolve, reject) {
     var data = new gapi.analytics.report.Data({query: params});
