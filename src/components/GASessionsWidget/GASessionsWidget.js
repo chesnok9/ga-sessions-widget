@@ -23,12 +23,6 @@ import '../../scss/GASessionsWidget/GASessionsWidget.scss';
   }
 })(window, document, "script")
 
-// Google ClientID
-const CLIENT_ID = "[client-id]"
-
-// Google View ID
-const ids = "ga:[view-id]"
-
 // Buttons to change period titles
 const buttons = ['Day', 'Week', 'Month']
 
@@ -70,6 +64,8 @@ definejs('GASessionsWidget', function create (){
                   isEditing: this.props.mode == 'edit' ? true : false,
                   ready: false,
                   activeAttr: 0,
+                  client_id: this.props.clientID, // Google Client ID
+                  view_id: `ga:${this.props.viewID}`, // Google View ID
                   rows: [
                     ['',0,0,0]
                   ],
@@ -87,7 +83,7 @@ definejs('GASessionsWidget', function create (){
                 const doAuth = () => {
                   gapi.analytics.auth &&
                   gapi.analytics.auth.authorize({
-                    clientid: CLIENT_ID,
+                    clientid: this.state.client_id,
                     container: this.authButtonNode,
                   });
                 }
@@ -107,35 +103,35 @@ definejs('GASessionsWidget', function create (){
               // Load data from Google Analytics for current active settings
               loadAnalytics = (activeAttr) => {
                 const self = this
-                const dates = ['1daysAgo', '7daysAgo', '30daysAgo']
-                const sessions = query({
-                  'ids': ids,
+                const attr = ['1daysAgo', '7daysAgo', '30daysAgo']
+                const query1 = query({
+                  'ids': this.state.view_id,
                   'dimensions': 'ga:date',
                   'metrics': 'ga:sessions',
                   'segment': 'gaid::-1',
-                  'start-date': dates[activeAttr],
+                  'start-date': attr[activeAttr],
                   'end-date': 'yesterday',
                 });
 
-                const returnedUsers = query({
-                  'ids': ids,
+                const query2 = query({
+                  'ids': this.state.view_id,
                   'dimensions': 'ga:date',
                   'metrics': 'ga:sessions',
                   'segment': 'gaid::-3',
-                  'start-date': dates[activeAttr],
+                  'start-date': attr[activeAttr],
                   'end-date': 'yesterday',
                 });
 
-                const newUsers = query({
-                  'ids': ids,
+                const query3 = query({
+                  'ids': this.state.view_id,
                   'dimensions': 'ga:date',
                   'metrics': 'ga:sessions',
                   'segment': 'gaid::-2',
-                  'start-date': dates[activeAttr],
+                  'start-date': attr[activeAttr],
                   'end-date': 'yesterday',
                 });
 
-                Promise.all([sessions, returnedUsers, newUsers]).then(function(results) {
+                Promise.all([query1, query2, query3]).then(function(results) {
 
                   var data1 = results[0].rows.map(function(row) { return +row[1]; });
                   var data2 = results[1].rows.map(function(row) { return +row[1]; });
